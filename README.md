@@ -2,7 +2,6 @@ Topic: NodeTS <br />
 Submission Date: 05 November 2026 <br />
 Time: 09:00 AM
 
-
 Please submit by pushing to your GitHub repository and creating a pull request to your mentor
 
 # Title: Task 7 - Async Weather & News Dashboard
