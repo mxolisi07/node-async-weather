@@ -1,28 +1,33 @@
 {
-  "name": "node-async-weather",
+  "name": "async-weather",
   "version": "1.0.0",
-  "description": "",
+  "description": "Topic: NodeTS <br />\r Submission Date: 05 November 2026 <br />\r Time: 09:00 AM",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec ts-node src/server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon --exec ts-node src/callbackVersion.ts",
+    "callback": "ts-node src/callbackVersion.ts"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mxolisi07/codetribe-kimberley-alt-projects.git"
+    "url": "git+https://github.com/mxolisi07/node-async-weather.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/mxolisi07/codetribe-kimberley-alt-projects/issues"
+    "url": "https://github.com/mxolisi07/node-async-weather/issues"
   },
-  "homepage": "https://github.com/mxolisi07/codetribe-kimberley-alt-projects#readme",
+  "homepage": "https://github.com/mxolisi07/node-async-weather#readme",
+  "dependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^20.11.0",
+    "body-parser": "^2.4.0",
+    "express": "^5.3.0",
+    "ts-node": "^10.9.2"
+  },
   "devDependencies": {
-    "@types/node": "^26.6.5",
     "nodemon": "^3.1.14",
-    "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }
 }
