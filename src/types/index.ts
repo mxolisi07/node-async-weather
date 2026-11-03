@@ -1,4 +1,3 @@
-// A callback function: first value is the error, second is the data
 export type Callback<T> = (error: Error | null, data: T | null) => void;
 
 export interface Weather {

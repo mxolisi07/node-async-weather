@@ -1,4 +1,3 @@
-// Change the coordinates to your own location
 export const LATITUDE = 51.5;
 export const LONGITUDE = -0.12;
 
