@@ -1,59 +1,52 @@
 import { getWeather, getNews, getAuthor } from "./services/apiCallback";
+import { showError } from "./utils/errorHandler";
 
-export function runCallbackVersion(done: () => void) {
+console.log("--- Example 1: Simple callbacks ---");
 
-  console.log("--- Callback Example 1: Simple callbacks ---");
+getWeather((error, weather) => {
+  if (error || !weather) {
+    showError("Callback - Example 1 - weather", error);
+    return;
+  }
+  console.log("Temperature:", weather.current_weather.temperature, "°C");
 
-  getWeather((error, weather) => {
-    if (error || !weather) {
-      console.log("Weather error:", error?.message);
-      return done();
+  getNews((error, news) => {
+    if (error || !news) {
+      showError("Callback - Example 1 - news", error);
+      return;
     }
-    console.log("Temperature:", weather.current_weather.temperature, "°C");
+    console.log("Headlines:");
+    news.posts.forEach((post) => console.log("-", post.title));
 
-    getNews((error, news) => {
-      if (error || !news) {
-        console.log("News error:", error?.message);
-        return done();
+    console.log("\n--- Example 2: Callback hell ---");
+
+    getWeather((error, weather) => {
+      if (error || !weather) {
+        showError("Callback - Example 2 - step 1 (weather)", error);
+        return;
       }
-      console.log("Headlines:");
-      news.posts.forEach((post) => console.log("-", post.title));
+      console.log("Step 1 - Temperature:", weather.current_weather.temperature, "°C");
 
-      console.log("\n--- Callback Example 2: Callback hell ---");
-
-      getWeather((error, weather) => {
-        if (error || !weather) {
-          console.log("Weather error:", error?.message);
-          return done();
+      getNews((error, news) => {
+        if (error || !news) {
+          showError("Callback - Example 2 - step 2 (news)", error);
+          return;
         }
-        console.log("Step 1 - Temperature:", weather.current_weather.temperature, "°C");
+        const firstPost = news.posts[0];
+        if (!firstPost) {
+          showError("Callback - Example 2 - step 2 (news)", new Error("No news posts available"));
+          return;
+        }
+        console.log("Step 2 - First headline:", firstPost.title);
 
-        getNews((error, news) => {
-          if (error || !news) {
-            console.log("News error:", error?.message);
-            return done();
+        getAuthor(firstPost.userId, (error, author) => {
+          if (error || !author) {
+            showError("Callback - Example 2 - step 3 (author)", error);
+            return;
           }
-          const firstPost = news.posts[0];
-          if (!firstPost) {
-            console.log("News error: No headlines found.");
-            return done();
-          }
-          console.log("Step 2 - First headline:", firstPost.title);
-
-          getAuthor(firstPost.userId, (error, author) => {
-            if (error || !author) {
-              console.log("Author error:", error?.message);
-              return done();
-            }
-            console.log("Step 3 - Written by:", author.firstName, author.lastName);
-            done();
-          });
+          console.log("Step 3 - Written by:", author.firstName, author.lastName);
         });
       });
     });
   });
-}
-
-if (require.main === module) {
-  runCallbackVersion(() => console.log("\nDone (Callback version)."));
-}
+});

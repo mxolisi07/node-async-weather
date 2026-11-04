@@ -6,7 +6,8 @@
   "scripts": {
     "callback": "ts-node src/callbackVersion.ts",
     "promise": "ts-node src/promiseVersion.ts",
-     "all": "npm run callback && npm run promise",
+    "async": "ts-node src/asyncAwaitVersion.ts",
+     "all": "npm run callback && npm run promise && npm run async",
      "dev": "nodemon --watch src -e ts --exec \"npm run all\""
   },
   "repository": {

@@ -1,24 +1,37 @@
 import https from "https";
 import { Callback } from "../types";
+import { httpError } from "./errorHandler";
 
 export function getData<T>(url: string, callback: Callback<T>) {
-  https
-    .get(url, (res) => {
-      let text = "";
+  const request = https.get(url, (res) => {
+    const status = res.statusCode || 0;
 
-      res.on("data", (piece) => {
-        text += piece;
-      });
+    if (status < 200 || status >= 300) {
+      res.resume(); 
+      callback(httpError(status, url), null);
+      return;
+    }
 
-      res.on("end", () => {
-        try {
-          callback(null, JSON.parse(text));
-        } catch (err) {
-          callback(err as Error, null);
-        }
-      });
-    })
-    .on("error", (err) => {
-      callback(err, null);
+    let text = "";
+
+    res.on("data", (piece) => {
+      text += piece;
     });
+
+    res.on("end", () => {
+      try {
+        callback(null, JSON.parse(text));
+      } catch (err) {
+        callback(new Error("The server sent data we could not read."), null);
+      }
+    });
+  });
+
+  request.setTimeout(10000, () => {
+    request.destroy(new Error("Request timed out after 10 seconds"));
+  });
+
+  request.on("error", (err) => {
+    callback(err, null);
+  });
 }
